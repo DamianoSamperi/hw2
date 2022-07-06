@@ -17,6 +17,7 @@ class HomeController extends Controller{
     }}
     public function store()
     {
+        //mongodb
         $request=request()->all();
         $username=session('username');
         $descrizione = new Descrizione();
@@ -24,6 +25,14 @@ class HomeController extends Controller{
         $descrizione->username = $username;      
         $descrizione->save();
          return redirect('home')->withInput();
+    }
+    public function elimina(){
+        $username=session('username');
+        Descrizione::where('username',$username)->delete();
+        // // for
+        // print_r($descrizione->username);
+        // // $descrizione->delete();
+        return redirect('home');
     }
 
 }

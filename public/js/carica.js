@@ -1,6 +1,6 @@
 function OnJson(json){
     const intestazione=document.createElement('div');
-    intestazione.textContent="Questo è un esempio di ricerca effettuata tramite parole chiave possibile dopo aver effetuato il login";
+    intestazione.textContent="Questo è un esempio di ricerca effettuata tramite parole chiave, possibile solo dopo aver effetuato il login";
     const nuova_ricetta=document.querySelector(".nuova_vista");
     nuova_ricetta.appendChild(intestazione);
     for(let i=0;i<2;i++){

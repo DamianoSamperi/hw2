@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 class RicercaController extends Controller {
     public function ricetta($value){
-        $api_recipes="https://api.edamam.com/api/recipes/v2?type=public&";
+        $api_recipes="https://api.edamam.com/api/recipes/v2?type=public";
         $api_id_recipes="d683117b";
         $api_key="2efd83bc8dd404aac01c8a2b391867e5";
-        return Http::get($api_recipes.'&q='.$value.'&app_id='.$api_id_recipes.'&app_key='.$api_key)->json();
+        $api_recipes_url=$api_recipes.'&q='.$value.'&app_id='.$api_id_recipes.'&app_key='.$api_key;
+        return Http::get($api_recipes_url)->json();
     }
     public function spotify(){
         $spotify_url="https://api.spotify.com/v1/browse/new-releases";

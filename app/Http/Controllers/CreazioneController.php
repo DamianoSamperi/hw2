@@ -7,12 +7,12 @@ use App\Models\Utente;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 class CreazioneController extends Controller {
-    public function carica($bool){
+    public function carica($user){
     // $array=array();
-     if($bool)
+     if($user)
      $username=session('username');
      else
-     $username=$bool;
+     $username=$user;
      $exist = Creation::where('username', $username)->exists();
      if($exist){
         $creation=Creation::where('username', $username)->take(3)->get();
@@ -41,30 +41,29 @@ class CreazioneController extends Controller {
     $request=request()->all();
     //conta pure token ed submit
     if (count($request)==5) {
-        $size = request('img')->getSize();
+     $size = request('img')->getSize();
      $type = request('img')->Extension();
      $allowedExt = array('png'=>IMAGETYPE_PNG , 'jpg'=>IMAGETYPE_JPEG );
         if ($allowedExt[$type]) {
-        if ($size < 7000000){
-         $fileNameNew=uniqid('', true).".".$type;
-         $destinationPath = 'images/';
-        $fileName=request('img')->getClientOriginalName();
-         request('img')->move($destinationPath,$fileNameNew);
-         $query = Utente::where('username', $username)->get();
-         if($query)
-         { 
-            $newUser =  Creation::create([
-                'user_id' => $user,
-                'username'=> $username,
-                'label' => $request['titolo'],
-                'preparazione' => $request['preparazione'],
-                'img' => $destinationPath.$fileNameNew,
-                ]);
-                
-         }
-     }}
+          if ($size < 7000000){
+            $fileNameNew=uniqid('', true).".".$type;
+            $destinationPath = 'images/';
+            $fileName=request('img')->getClientOriginalName();
+            request('img')->move($destinationPath,$fileNameNew);
+            $query = Utente::where('username', $username)->get();
+            if($query)
+            { 
+              $newUser =  Creation::create([
+               'user_id' => $user,
+               'username'=> $username,
+               'label' => $request['titolo'],
+               'preparazione' => $request['preparazione'],
+               'img' => $destinationPath.$fileNameNew,
+                ]);        
+            }
+          }
+        }
     }
-     
    }
 }
 ?>

@@ -35,7 +35,6 @@ class CaricaController extends Controller {
     public function descrizione(){
         $descrizione = Descrizione::all();
         return $descrizione;
-        // return $descrizione;
     }
 
 }

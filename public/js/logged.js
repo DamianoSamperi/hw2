@@ -215,9 +215,10 @@ function Carica_creati(json){
 
        cestino.addEventListener('click',function (json){ return Cancella(cestino); });
        
-    }}else{
-        creati.textContent='Ancora nessun elemento creato';
-    }
+    }}
+    // else{
+    //     creati.textContent='Ancora nessun elemento creato';
+    // }
 }
 function Verifica(json){
     const preferito= document.getElementById(json['preferito']);
@@ -232,6 +233,9 @@ function Verifica(json){
 function Cancella(cestino){
     id=cestino.parentNode.querySelector(".Box1 div").innerHTML;
     fetch('/creazione/cancella/'+encodeURIComponent(id)).then(Ricarica);
+}
+function Elimina(){
+    fetch('/home/cancella/').then(Ricarica);
 }
 function Preferito(preferito){
     id=preferito.className;
@@ -262,18 +266,18 @@ function Ricerca(event){
     const value=encodeURIComponent(input.value);
     const utente=document.querySelector("#scelta");
     if(value!=""){
-        if(utente.value=='rc'){
-    section_descrizione.classList.add('Hidden');
-    fetch('/ricerca/'+encodeURIComponent(value)).then(OnResponse).then(OnJson);
-    fetch('/ricercaSpotify').then(OnResponse).then(JsonMostraAlbum);
-        }
-        else{
-            section_descrizione.classList.remove('Hidden');
-    fetch('/ricerca/utente/'+encodeURIComponent(value)).then(OnResponse).then(OnJson_carica_utente);
-    butt=document.querySelector("#Ritorna");
-       butt.classList.remove("Hidden");
-       butt.addEventListener("click",torna);
-    }
+      if(utente.value=="rc"){
+        section_descrizione.classList.add('Hidden');
+        fetch('/ricerca/'+encodeURIComponent(value)).then(OnResponse).then(OnJson);
+        fetch('/ricercaSpotify').then(OnResponse).then(JsonMostraAlbum);
+      }
+      else{
+        section_descrizione.classList.remove('Hidden');
+        fetch('/ricerca/utente/'+encodeURIComponent(value)).then(OnResponse).then(OnJson_carica_utente);
+        butt=document.querySelector("#Ritorna");
+        butt.classList.remove("Hidden");
+        butt.addEventListener("click",torna);
+      }
     
 }
 }
@@ -286,6 +290,9 @@ function OnJson_carica_utente(json){
         titolo_ricetta.textContent="Utente non trovato ";
         const sezione_spotify=document.querySelector(".Spotify");
         sezione_spotify.classList.add("Hidden");
+
+        const container=document.querySelector(".Descrizione span");
+        container.innerHTML='';
     }else{
 
     const sezione_preferiti=document.querySelector(".mostra_preferiti");
@@ -336,7 +343,8 @@ function OnJson_carica_utente(json){
 
     preferito.addEventListener('click',function (json){ return Preferito(preferito); });
        
-    }}else{
+     }
+    }else{
         nuova_ricetta.textContent="L'utente non ha preferiti salvati"
     }
     fetch('/descrizione').then(OnResponse).then(function (json){ return MongoDb_carica_descrizione(json,input.value); });
@@ -397,24 +405,33 @@ function Inizializza(){
 function MongoDb_carica_descrizione(json,username){
     form=document.getElementById('Crea_descrizione');
     var hit="Nessuna descrizione salvata";
-    // username=document.getElementById('session');
-    // username=username.innerText;
+    const nuova_descrizione=document.querySelector(".Descrizione");
+    const Box=document.createElement("span");
+    const container=document.querySelector(".Descrizione span");
+    container.innerHTML='';
 for(let i=0;i<json.length;i++){
     if(json[i].username==username){
     hit=json[i].testo;
     form.classList.add("Hidden");
+    
+    if(json[i].username==session_username){
+     const elimina=document.createElement('img');
+     elimina.src="cancella.png";
+     container.appendChild(elimina);
+     elimina.addEventListener("click",Elimina);
+    }
+    
     }
 }
-if(hit=="Nessuna descrizione salvata"&&username==session_username)
-form.classList.remove('Hidden');
-const nuova_descrizione=document.querySelector(".Descrizione");
-const Box1=document.createElement("div");
-const container=document.querySelector(".Descrizione span");
-container.innerHTML='';
-Box1.classList.add("Box1");
-Box1.innerText=hit;
-container.appendChild(Box1);
-nuova_descrizione.appendChild(container);
+   if(hit=="Nessuna descrizione salvata"&&username==session_username){
+    form.classList.remove('Hidden');
+   }
+   else{
+    Box.classList.add("Descrizione");
+    Box.innerText=hit;
+    container.appendChild(Box);
+    nuova_descrizione.appendChild(container);
+   }
 }
 function MostraLink(event){
     link=document.querySelector('#link');
