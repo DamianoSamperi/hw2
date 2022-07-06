@@ -11,20 +11,19 @@
       <nav>
         <div id="links">
           <div>
-        <?php
-                if (old('username')||old('password')) {
-                    echo "<span class='errorj'>Username e/o password errati.</span>";
-                }
-                
+           <?php
+              if (old('username')||old('password')) {
+                 echo "<span class='errorj'>Username e/o password errati.</span>";
+              }     
             ?>
-          <a class="button">Login</a>
-          <form class="Hidden" method="post" action='/login'>
-          <?php echo csrf_field(); ?>
-            <input type="text" name="username" placeholder='username'>
-            <input type="password" name="password" placeholder='Password'>
-            <input type="submit" id="submit" value="Invia">
-            <div class="Signup">Non hai un account? <a href="register/index">Iscriviti</a>
-          </form>
+           <a class="button">Login</a>
+           <form class="Hidden" method="post" action='/login'>
+             <?php echo csrf_field(); ?>
+             <input type="text" name="username" placeholder='username'>
+             <input type="password" name="password" placeholder='Password'>
+             <input type="submit" id="submit" value="Invia">
+             <div class="Signup">Non hai un account? <a href="register/index">Iscriviti</a>
+           </form>
           </div>
         </div>
       </nav>

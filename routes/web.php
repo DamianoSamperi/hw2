@@ -30,6 +30,7 @@ Route::get('/carica/home', 'CaricaController@home');
 Route::get('/descrizione', 'CaricaController@descrizione');
 Route::get('/home', 'HomeController@index');
 Route::post('/SalvaDescrizione', 'HomeController@store');
+Route::get('/home/cancella/', 'HomeController@elimina');
 Route::get('/preferito/verifica/{preferito}/{id}','PreferitoController@verifica');
 Route::get('/preferito/modifica/{preferito}/{id}','PreferitoController@modifica');
 Route::get('/creazione/carica/{query}','CreazioneController@carica');
