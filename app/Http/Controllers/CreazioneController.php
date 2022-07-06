@@ -53,17 +53,34 @@ class CreazioneController extends Controller {
             $query = Utente::where('username', $username)->get();
             if($query)
             { 
-              $newUser =  Creation::create([
+              if(!Creation::where('label',$request['titolo'])->exists()){
+              $newCreation =  Creation::create([
                'user_id' => $user,
                'username'=> $username,
                'label' => $request['titolo'],
                'preparazione' => $request['preparazione'],
                'img' => $destinationPath.$fileNameNew,
                 ]);        
+              }else{
+                $newCreation=Creation::where('label',$request['titolo']);
+                $newCreation->update([
+                  'user_id' => $user,
+                  'username'=> $username,
+                  'label' => $request['titolo'],
+                  'preparazione' => $request['preparazione'],
+                  'img' => $destinationPath.$fileNameNew,
+                   ]);        
+                // $newCreation->user_id = $user;
+                // $newCreation->username= $username;
+                // $newCreation->label = $request['titolo'];
+                // $newCreation->preparazione = $request['preparazione'];
+                // $newCreation->img = $destinationPath.$fileNameNew;
+              }
             }
           }
         }
     }
+    return redirect('home');
    }
 }
 ?>
